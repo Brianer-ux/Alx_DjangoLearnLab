@@ -47,7 +47,8 @@ for book in books_in_library:
 # 3. Retrieve the librarian for a library
 # ---------------------------
 library = Library.objects.get(name=library_name)
-librarian = library.librarian
+librarian = Librarian.objects.get(library=library)
 
 print("\nLibrarian for Central Library:")
 print(librarian.name)
+
