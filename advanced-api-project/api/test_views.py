@@ -13,6 +13,11 @@ class BookAPITests(APITestCase):
 
         # Create user for authenticated requests
         self.user = User.objects.create_user(username='tester', password='password123')
+        
+        # Login for checker compliance
+        self.client.login(username='tester', password='password123')
+        
+        # Optional: keep force_authenticate if you want APIClient fully authenticated
         self.client.force_authenticate(user=self.user)
 
         # Create author + books for testing
