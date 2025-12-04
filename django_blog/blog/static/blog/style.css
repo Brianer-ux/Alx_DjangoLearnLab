@@ -1,0 +1,16 @@
+/* blog/static/blog/style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.post {
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.meta {
+    color: #666;
+    font-size: 0.9em;
+}
