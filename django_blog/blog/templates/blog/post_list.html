@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>All Posts</h1>
+
+<!-- Search bar goes here -->
+<form method="GET" action="{% url 'search-posts' %}">
+    <input type="text" name="q" placeholder="Search posts..." />
+    <button type="submit">Search</button>
+</form>
+
 <a href="{% url 'post-create' %}">Create New Post</a>
+
 <ul>
     {% for post in posts %}
     <li>
