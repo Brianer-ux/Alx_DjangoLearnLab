@@ -1,6 +1,5 @@
-from rest_framework import generics, status
+from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 
@@ -10,13 +9,11 @@ class RegisterView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-
-        token, _ = Token.objects.get_or_create(user=user)
+        user = serializer.save()  # token already created in serializer
 
         return Response({
             "user": UserSerializer(user).data,
-            "token": token.key
+            "token": user.auth_token.key  # retrieve the token
         })
 
 
@@ -28,11 +25,11 @@ class LoginView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         user = serializer.validated_data['user']
-        token, _ = Token.objects.get_or_create(user=user)
+        token = user.auth_token.key  # get or create automatically if using DRF default token
 
         return Response({
             "user": UserSerializer(user).data,
-            "token": token.key
+            "token": token
         })
 
 
