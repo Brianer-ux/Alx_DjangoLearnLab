@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework.authtoken.models import Token
 
-User = get_user_model()
+User = get_user_model()  # ensures compatibility with any custom user model
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,12 +18,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['username', 'password']
 
     def create(self, validated_data):
+        # use get_user_model().objects.create_user
         user = User.objects.create_user(
             username=validated_data['username'],
             password=validated_data['password']
         )
-        # create a token automatically
-        Token.objects.create(user=user)
+        Token.objects.create(user=user)  # create token automatically
         return user
 
 
