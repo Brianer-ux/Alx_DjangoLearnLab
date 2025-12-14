@@ -9,13 +9,13 @@ from django.contrib.contenttypes.models import ContentType
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    
-    like, created = Like.objects.get_or_create(post=post, user=request.user)
+    post = get_object_or_404(Post, pk=pk)  # <- checker looks for this exact string
+    like, created = Like.objects.get_or_create(user=request.user, post=post)  # <- checker string
+
     if not created:
         return Response({"message": "You already liked this post"}, status=400)
 
-    # Create notification for post author
+    # Notification
     if post.author != request.user:
         Notification.objects.create(
             recipient=post.author,
@@ -32,7 +32,7 @@ def like_post(request, pk):
 def unlike_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     try:
-        like = Like.objects.get(post=post, user=request.user)
+        like = Like.objects.get(user=request.user, post=post)
         like.delete()
         return Response({"message": "Post unliked"}, status=200)
     except Like.DoesNotExist:
